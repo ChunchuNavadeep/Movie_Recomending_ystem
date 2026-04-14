@@ -1,28 +1,40 @@
 import streamlit as st
 import pickle
 import pandas as pd
+from sklearn.metrics.pairwise import cosine_similarity
 
 @st.cache_data
 def load_data():
     df = pickle.load(open("movies.pkl", 'rb'))
-    similar = pickle.load(open("matrix.pkl", 'rb'))
-    return df, similar
+    matrix = pickle.load(open("matrix.pkl", 'rb'))
+    return df, matrix
 
-df, similar = load_data()
+df, matrix = load_data()
 
+# def recommend(title):
+#     if title not in df["title"].values:
+#         return "Movie not found"
+
+#     ind = df.index[df["title"] == title][0]
+#     scores = similar[ind]
+
+#     top_idx = [i for i in scores.argsort()[::-1][1:] if scores[i] > 0.15][:10]
+#     result = df.iloc[top_idx][["title","rating"]].copy()
+#     # result["similarity_score"] = similar[ind][top_idx].round(3)
+
+#     return result
 def recommend(title):
+
     if title not in df["title"].values:
         return "Movie not found"
 
     ind = df.index[df["title"] == title][0]
-    scores = similar[ind]
-
+    scores = cosine_similarity(matrix[ind], matrix).flatten()
     top_idx = [i for i in scores.argsort()[::-1][1:] if scores[i] > 0.15][:10]
     result = df.iloc[top_idx][["title","rating"]].copy()
-    # result["similarity_score"] = similar[ind][top_idx].round(3)
+    result["similarity_score"] = scores[top_idx].round(3)
 
     return result
-
 # UI
 st.title("🎬 Movie Recommendation System")
 
