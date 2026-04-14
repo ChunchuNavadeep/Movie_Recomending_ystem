@@ -5,7 +5,7 @@ import pandas as pd
 @st.cache_data
 def load_data():
     df = pickle.load(open("movies.pkl", 'rb'))
-    similar = pickle.load(open("similar.pkl", 'rb'))
+    similar = pickle.load(open("matrix.pkl", 'rb'))
     return df, similar
 
 df, similar = load_data()
