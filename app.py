@@ -41,8 +41,9 @@ st.title("🎬 Movie Recommendation System")
 option = st.selectbox("Select a Movie", df["title"].values)
 
 if st.button("Recommend"):
+    st.write("ERRIPUKA")
     result = recommend(option)
-
+    
     if isinstance(result, str):
         st.error(result)
     else:
