@@ -10,7 +10,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 # -----------------------------
 BASE_DIR = os.path.dirname(__file__)
 
-movies_path = os.path.join(BASE_DIR, "model", "movie_list.pkl")
+movies_path = os.path.join(BASE_DIR,"movie_list.pkl")
 movies = pickle.load(open(movies_path, "rb"))
 
 # -----------------------------
