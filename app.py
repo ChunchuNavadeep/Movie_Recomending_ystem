@@ -1,52 +1,62 @@
-import streamlit as st
 import pickle
-import pandas as pd
-from sklearn.metrics.pairwise import cosine_similarity
+import streamlit as st
+import requests
 
-@st.cache_data
-def load_data():
-    df = pickle.load(open("movies.pkl", 'rb'))
-    matrix = pickle.load(open("matrix.pkl", 'rb'))
-    return df, matrix
+def fetch_poster(movie_id):
+    url = "https://api.themoviedb.org/3/movie/{}?api_key=8265bd1679663a7ea12ac168da84d2e8&language=en-US".format(movie_id)
+    data = requests.get(url)
+    data = data.json()
+    poster_path = data['poster_path']
+    full_path = "https://image.tmdb.org/t/p/w500/" + poster_path
+    return full_path
 
-df, matrix = load_data()
-
-# def recommend(title):
-#     if title not in df["title"].values:
-#         return "Movie not found"
-
-#     ind = df.index[df["title"] == title][0]
-#     scores = similar[ind]
-
-#     top_idx = [i for i in scores.argsort()[::-1][1:] if scores[i] > 0.15][:10]
-#     result = df.iloc[top_idx][["title","rating"]].copy()
-#     # result["similarity_score"] = similar[ind][top_idx].round(3)
-
-#     return result
-def recommend(title):
-
-    if title not in df["title"].values:
+def recommend(movie):
+    if movie not in movies["title"].values:
         return "Movie not found"
+    index = movies[movies['title'] == movie].index[0]
+    distances = sorted(list(enumerate(similarity[index])), reverse=True, key=lambda x: x[1])
+    recommended_movie_names = []
+    recommended_movie_posters = []
+    for i in distances[1:6]:
+        # fetch the movie poster
+        movie_id = movies.iloc[i[0]].movie_id
+        recommended_movie_posters.append(fetch_poster(movie_id))
+        recommended_movie_names.append(movies.iloc[i[0]].title)
 
-    ind = df.index[df["title"] == title][0]
-    scores = cosine_similarity(matrix[ind], matrix).flatten()
-    top_idx = [i for i in scores.argsort()[::-1][1:] if scores[i] > 0.15][:10]
-    result = df.iloc[top_idx][["title","rating"]].copy()
-    result["similarity_score"] = scores[top_idx].round(3)
+    return recommended_movie_names,recommended_movie_posters
 
-    return result
-# UI
-st.title("🎬 Movie Recommendation System")
 
-option = st.selectbox("Select a Movie", df["title"].values)
+st.header('Movie Recommender System')
+movies = pickle.load(open('model/movie_list.pkl','rb'))
+similarity = pickle.load(open('model/similarity.pkl','rb'))
 
-if st.button("Recommend"):
-    st.write("ERRIPUKA")
-    result = recommend(option)
-    
-    if isinstance(result, str):
-        st.error(result)
-    else:
-        st.write("### Top Recommendations:")
-        for i, row in result.iterrows():
-            st.write(f"🎬 {row['title']}  ⭐ {row['rating']}")
+movie_list = movies['title'].values
+selected_movie = st.selectbox(
+    "Type or select a movie from the dropdown",
+    movie_list
+)
+
+if st.button('Show Recommendation'):
+    recommended_movie_names,recommended_movie_posters = recommend(selected_movie)
+    col1, col2, col3, col4, col5 = st.beta_columns(5)
+    with col1:
+        st.text(recommended_movie_names[0])
+        st.image(recommended_movie_posters[0])
+    with col2:
+        st.text(recommended_movie_names[1])
+        st.image(recommended_movie_posters[1])
+
+    with col3:
+        st.text(recommended_movie_names[2])
+        st.image(recommended_movie_posters[2])
+    with col4:
+        st.text(recommended_movie_names[3])
+        st.image(recommended_movie_posters[3])
+    with col5:
+        st.text(recommended_movie_names[4])
+        st.image(recommended_movie_posters[4])
+
+
+
+
+
