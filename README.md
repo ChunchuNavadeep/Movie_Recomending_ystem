@@ -1,12 +1,12 @@
 # 🎬 Movie Recommendation System (Deployed)
 
-## 🌐 Live Demo
+##  Live Demo
 
 👉 https://movielover.streamlit.app
 
 ---
 
-## 📌 Overview
+##  Overview
 
 This is a **Content-Based Movie Recommendation System** that suggests similar movies based on:
 
@@ -20,17 +20,17 @@ It uses **Natural Language Processing (NLP)** and **cosine similarity** to recom
 
 ---
 
-## 🚀 Features
+##  Features
 
-* 🎯 Recommend top 5 similar movies
-* 🧠 Uses TF-IDF + NLP
-* 🖼️ Fetches movie posters using TMDB API
-* ⚡ Fast performance using caching
-* 🌐 Fully deployed using Streamlit
+*  Recommend top 5 similar movies
+*  Uses TF-IDF + NLP
+*  Fetches movie posters using TMDB API
+*  Fast performance using caching
+*  Fully deployed using Streamlit
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 * Python
 * Pandas, NumPy
@@ -41,7 +41,7 @@ It uses **Natural Language Processing (NLP)** and **cosine similarity** to recom
 
 ---
 
-## ⚙️ How It Works
+##  How It Works
 
 ### 1. Data Processing
 
@@ -101,7 +101,7 @@ TfidfVectorizer(
 
 ---
 
-## 🖥️ UI (Streamlit)
+##  UI (Streamlit)
 
 * Dropdown to select movie
 * Button to trigger recommendation
@@ -109,7 +109,7 @@ TfidfVectorizer(
 
 ---
 
-## 💾 Model Storage
+##  Model Storage
 
 ```python
 pickle.dump(movie_list, open("movie_list.pkl", "wb"))
@@ -118,7 +118,7 @@ pickle.dump(vector, open("vector.pkl", "wb"))
 
 ---
 
-## ▶️ Run Locally
+##  Run Locally
 
 ```bash
 pip install -r requirements.txt
@@ -135,23 +135,23 @@ streamlit run app.py
 
 ---
 
-## 🚀 Future Improvements
+##  Future Improvements
 
-* 🔥 Add BERT embeddings (better accuracy)
-* 🎯 Add "Why recommended" explanation
-* 🔍 Add search autocomplete
-* 🎚️ Add filters (genre, rating, year)
-* ❤️ Add user-based recommendations
+*  Add BERT embeddings (better accuracy)
+*  Add "Why recommended" explanation
+*  Add search autocomplete
+*  Add filters (genre, rating, year)
+*  Add user-based recommendations
 
 ---
 
-## 👨‍💻 Author
+##  Author
 
 Built as an ML/NLP project to demonstrate recommendation systems and deployment.
 
 ---
 
-## ⭐ Project Highlight
+##  Project Highlight
 
 This project demonstrates:
 
