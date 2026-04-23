@@ -1,151 +1,184 @@
-#IN THIS SITE THE POSTER MAY NOT BE LOADED AS ACCESS ISSUE FROM SOURCE
-# 🤖 AI Voice Assistant (Python)
+# 🎬 Movie Recommendation System (Content-Based)
 
-A feature-rich AI Voice Assistant built using Python that can perform tasks like voice recognition, text-to-speech, web browsing, Wikipedia search, translation, and more. This project demonstrates integration of multiple APIs and libraries to create a smart assistant similar to JARVIS.
+## 📌 Overview
+
+This project is a **Content-Based Movie Recommendation System** built using the TMDB 5000 Movies dataset.
+It recommends movies similar to a selected movie based on **genres, keywords, cast, crew, and overview**.
+
+The system uses:
+
+* **Natural Language Processing (NLP)**
+* **TF-IDF Vectorization**
+* **Cosine Similarity**
 
 ---
 
 ## 🚀 Features
 
-* 🎤 Speech Recognition (voice input)
-* 🔊 Text-to-Speech output
-* 🌐 Open websites (Google, YouTube, etc.)
-* 📖 Wikipedia search
-* 🌍 Language translation
-* 📰 News fetching (via API)
-* ⏰ Date & Time updates
-* 🎲 Random responses / greetings
-* 📧 Send Emails (SMTP)
-* 🎵 Play audio responses (gTTS + pygame)
-* 🧠 Multi-threading & scheduling support
+* Recommend top 5 similar movies
+* Uses movie metadata (not ratings)
+* Fast similarity computation
+* Clean and optimized preprocessing pipeline
+* Ready for integration with UI (Streamlit)
 
 ---
 
-## 🛠️ Tech Stack
+## 📂 Dataset
 
-* **Python 3.10+**
-* Libraries:
+* TMDB 5000 Movies Dataset
+* Files used:
 
-  * `speech_recognition`
-  * `pyttsx3`
-  * `gtts`
-  * `pygame`
-  * `wikipedia`
-  * `requests`
-  * `smtplib`
-  * `datetime`
-  * `threading`
-  * `schedule`
-  * `googletrans`
-  * `BeautifulSoup`
+  * `tmdb_5000_movies.csv`
+  * `tmdb_5000_credits.csv`
 
 ---
 
-## 📦 Installation
+## ⚙️ Tech Stack
 
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/your-username/ai-voice-assistant.git
-cd ai-voice-assistant
-```
-
-### 2. Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-Or manually:
-
-```bash
-pip install speechrecognition pyttsx3 gtts pygame wikipedia requests schedule googletrans==4.0.0-rc1 beautifulsoup4
-```
-
-### 3. Install Additional Requirements
-
-* Install **PyAudio** (for microphone input):
-
-```bash
-pip install pipwin
-pipwin install pyaudio
-```
+* Python
+* Pandas
+* NumPy
+* Scikit-learn
+* NLTK
+* Pickle (for model saving)
 
 ---
 
-## 🔑 API Setup (Optional)
+## 🔧 How It Works
 
-* Get a News API key from: https://newsapi.org/
-* Replace in code:
+### 1. Data Preprocessing
+
+* Merge movies and credits dataset
+* Select important columns:
+
+  * title, overview, genres, keywords, cast, crew
+* Convert JSON-like columns into lists
+* Extract:
+
+  * Top 3 cast members
+  * Director from crew
+
+---
+
+### 2. Feature Engineering
+
+* Combine all features into a single column: `tags`
+* Remove spaces from names (e.g., "Sam Worthington" → "SamWorthington")
+* Convert list → string
+* Apply:
+
+  * Lowercasing
+  * Regex cleaning
+  * Stemming (PorterStemmer)
+
+---
+
+### 3. Vectorization
+
+* Use **TF-IDF Vectorizer**
 
 ```python
-newsapi = "YOUR_API_KEY"
+TfidfVectorizer(
+    stop_words='english',
+    max_features=10000,
+    ngram_range=(1,2)
+)
 ```
 
 ---
 
-## ▶️ Usage
+### 4. Similarity Computation
 
-Run the assistant:
+* Compute cosine similarity between all movies:
+
+```python
+cosine_similarity(vector)
+```
+
+---
+
+### 5. Recommendation Logic
+
+* Find selected movie index
+* Get similarity scores
+* Sort movies by similarity
+* Return top 5 recommendations
+
+---
+
+## 🧠 Example
+
+Input:
+
+```text
+Gandhi
+```
+
+Output:
+
+```text
+Gandhi, My Father  
+The Wind That Shakes the Barley  
+A Passage to India  
+Guiana 1838  
+Ramanujan  
+```
+
+---
+
+## 💾 Saving Model
+
+```python
+import pickle
+
+pickle.dump(new, open('movie_list.pkl','wb'))
+pickle.dump(vector, open('vector.pkl','wb'))
+```
+
+---
+
+## ▶️ How to Run
+
+1. Install dependencies:
 
 ```bash
-python main.py
+pip install pandas numpy scikit-learn nltk
 ```
 
-Then speak commands like:
+2. Run your Python script or notebook
 
-* "Open Google"
-* "Search Wikipedia for AI"
-* "What is the time?"
-* "Translate hello to Hindi"
-* "Play music"
+3. Call:
 
----
-
-## 📂 Project Structure
-
-```
-ai-voice-assistant/
-│── main.py
-│── requirements.txt
-│── README.md
-│── assets/
-│── modules/
+```python
+recommend("Movie Name")
 ```
 
 ---
 
-## ⚠️ Notes
+## ⚠️ Limitations
 
-* Ensure your microphone is working properly.
-* Internet connection is required for APIs.
-* Email feature requires enabling "less secure apps" or app password.
+* Does not use user ratings (no personalization)
+* TF-IDF does not capture deep semantic meaning
+* Recommendations depend on text similarity only
 
 ---
 
-## 💡 Future Improvements
+## 🚀 Future Improvements
 
-* Add GUI (Tkinter / PyQt / Streamlit)
-* Integrate OpenAI / LLM for smarter conversations
-* Add wake word detection ("Hey Jarvis")
-* Improve NLP understanding
-* Connect with IoT devices
+* Add **BERT embeddings** for better accuracy
+* Build **Streamlit UI**
+* Add **movie posters using TMDB API**
+* Add **genre filtering**
+* Hybrid system (content + collaborative filtering)
 
 ---
 
 ## 👨‍💻 Author
 
-**Navadeep Chunchu**
-B.Tech Data Science & Engineering
+Developed as a Machine Learning / NLP project for learning recommendation systems.
 
 ---
 
-## 📜 License
+## ⭐ Conclusion
 
-This project is for educational purposes. You can modify and use it freely.
-
----
-
-## ⭐ If you like this project
-
-Give it a star ⭐ on GitHub and share it!
+This project demonstrates how **text-based similarity** can be used to build a recommendation system from scratch and is a strong foundation for more advanced recommender systems.
