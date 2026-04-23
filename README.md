@@ -1,85 +1,82 @@
-# 🎬 Movie Recommendation System (Content-Based)
+# 🎬 Movie Recommendation System (Deployed)
+
+## 🌐 Live Demo
+
+👉 https://movielover.streamlit.app
+
+---
 
 ## 📌 Overview
 
-This project is a **Content-Based Movie Recommendation System** built using the TMDB 5000 Movies dataset.
-It recommends movies similar to a selected movie based on **genres, keywords, cast, crew, and overview**.
+This is a **Content-Based Movie Recommendation System** that suggests similar movies based on:
 
-The system uses:
+* Genres
+* Keywords
+* Cast
+* Director
+* Movie overview
 
-* **Natural Language Processing (NLP)**
-* **TF-IDF Vectorization**
-* **Cosine Similarity**
+It uses **Natural Language Processing (NLP)** and **cosine similarity** to recommend movies.
 
 ---
 
 ## 🚀 Features
 
-* Recommend top 5 similar movies
-* Uses movie metadata (not ratings)
-* Fast similarity computation
-* Clean and optimized preprocessing pipeline
-* Ready for integration with UI (Streamlit)
+* 🎯 Recommend top 5 similar movies
+* 🧠 Uses TF-IDF + NLP
+* 🖼️ Fetches movie posters using TMDB API
+* ⚡ Fast performance using caching
+* 🌐 Fully deployed using Streamlit
 
 ---
 
-## 📂 Dataset
+## 🛠️ Tech Stack
 
-* TMDB 5000 Movies Dataset
-* Files used:
+* Python
+* Pandas, NumPy
+* Scikit-learn (TF-IDF, Cosine Similarity)
+* NLTK (text preprocessing)
+* Streamlit (UI & deployment)
+* TMDB API (posters)
+
+---
+
+## ⚙️ How It Works
+
+### 1. Data Processing
+
+* Merged datasets:
 
   * `tmdb_5000_movies.csv`
   * `tmdb_5000_credits.csv`
+* Extracted:
 
----
-
-## ⚙️ Tech Stack
-
-* Python
-* Pandas
-* NumPy
-* Scikit-learn
-* NLTK
-* Pickle (for model saving)
-
----
-
-## 🔧 How It Works
-
-### 1. Data Preprocessing
-
-* Merge movies and credits dataset
-* Select important columns:
-
-  * title, overview, genres, keywords, cast, crew
-* Convert JSON-like columns into lists
-* Extract:
-
+  * Genres
+  * Keywords
   * Top 3 cast members
-  * Director from crew
+  * Director
 
 ---
 
 ### 2. Feature Engineering
 
-* Combine all features into a single column: `tags`
-* Remove spaces from names (e.g., "Sam Worthington" → "SamWorthington")
-* Convert list → string
-* Apply:
+* Combined all features into one column → `tags`
+* Removed spaces in names
+
+  * Example: `Sam Worthington → SamWorthington`
+* Applied:
 
   * Lowercasing
   * Regex cleaning
-  * Stemming (PorterStemmer)
+  * Stemming
 
 ---
 
 ### 3. Vectorization
 
-* Use **TF-IDF Vectorizer**
-
 ```python
 TfidfVectorizer(
-    stop_words='english',
+    stop_words="english",
     max_features=10000,
     ngram_range=(1,2)
 )
@@ -87,98 +84,81 @@ TfidfVectorizer(
 
 ---
 
-### 4. Similarity Computation
+### 4. Similarity Calculation
 
-* Compute cosine similarity between all movies:
+* Used **cosine similarity** to find similar movies
+
+---
+
+### 5. Recommendation
+
+* Select a movie
+* System finds most similar movies
+* Displays:
+
+  * Movie titles
+  * Posters
+
+---
+
+## 🖥️ UI (Streamlit)
+
+* Dropdown to select movie
+* Button to trigger recommendation
+* Displays results in 5 columns
+
+---
+
+## 💾 Model Storage
 
 ```python
-cosine_similarity(vector)
+pickle.dump(movie_list, open("movie_list.pkl", "wb"))
+pickle.dump(vector, open("vector.pkl", "wb"))
 ```
 
 ---
 
-### 5. Recommendation Logic
-
-* Find selected movie index
-* Get similarity scores
-* Sort movies by similarity
-* Return top 5 recommendations
-
----
-
-## 🧠 Example
-
-Input:
-
-```text
-Gandhi
-```
-
-Output:
-
-```text
-Gandhi, My Father  
-The Wind That Shakes the Barley  
-A Passage to India  
-Guiana 1838  
-Ramanujan  
-```
-
----
-
-## 💾 Saving Model
-
-```python
-import pickle
-
-pickle.dump(new, open('movie_list.pkl','wb'))
-pickle.dump(vector, open('vector.pkl','wb'))
-```
-
----
-
-## ▶️ How to Run
-
-1. Install dependencies:
+## ▶️ Run Locally
 
 ```bash
-pip install pandas numpy scikit-learn nltk
-```
-
-2. Run your Python script or notebook
-
-3. Call:
-
-```python
-recommend("Movie Name")
+pip install -r requirements.txt
+streamlit run app.py
 ```
 
 ---
 
 ## ⚠️ Limitations
 
-* Does not use user ratings (no personalization)
-* TF-IDF does not capture deep semantic meaning
+* No user personalization (no collaborative filtering)
+* TF-IDF does not understand deep meaning
 * Recommendations depend on text similarity only
 
 ---
 
 ## 🚀 Future Improvements
 
-* Add **BERT embeddings** for better accuracy
-* Build **Streamlit UI**
-* Add **movie posters using TMDB API**
-* Add **genre filtering**
-* Hybrid system (content + collaborative filtering)
+* 🔥 Add BERT embeddings (better accuracy)
+* 🎯 Add "Why recommended" explanation
+* 🔍 Add search autocomplete
+* 🎚️ Add filters (genre, rating, year)
+* ❤️ Add user-based recommendations
 
 ---
 
 ## 👨‍💻 Author
 
-Developed as a Machine Learning / NLP project for learning recommendation systems.
+Built as an ML/NLP project to demonstrate recommendation systems and deployment.
 
 ---
 
-## ⭐ Conclusion
+## ⭐ Project Highlight
 
-This project demonstrates how **text-based similarity** can be used to build a recommendation system from scratch and is a strong foundation for more advanced recommender systems.
+This project demonstrates:
+
+* End-to-end ML pipeline
+* NLP preprocessing
+* Real-world deployment
+* API integration
+
+---
+
